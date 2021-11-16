@@ -31,10 +31,31 @@ def cipher_string(ln, string):
             string[symbol] = string[symbol].lower()
             if string[symbol] in ln:
                 index = ln.index(string[symbol])
-                if index + k >> len(ln)-1:
+                if index + k > len(ln)-1:
                     string[symbol] = ln[(index + k) - len(ln)].upper()
                 else:
                     string[symbol] = ln[index + k].upper()
+    string = ''.join(string)
+    return string
+
+def decipher_string(ln, string):
+    string = list(string)
+    for symbol in range(len(string)):
+        if str(string[symbol]).islower():
+            if string[symbol] in ln:
+                index = ln.index(string[symbol])
+                if index - k < 0:
+                    string[symbol] = ln[(len(ln))-(k - index)]
+                else:
+                    string[symbol] = ln[index - k]
+        else:
+            string[symbol] = string[symbol].lower()
+            if string[symbol] in ln:
+                index = ln.index(string[symbol])
+                if index - k < 0:
+                    string[symbol] = ln[(len(ln))-(k - index)].upper()
+                else:
+                    string[symbol] = ln[index - k].upper()
     string = ''.join(string)
     return string
 
@@ -43,7 +64,13 @@ while not k.isdigit():
     k = input('Друг, почему ты ввел не цифру?Введи ее здесь:')
 k = int(k)
 language = choice_of_language()
-string = input('Введите строку, которую нужно зашифровать/дешифровать: ')
-code = cipher_string(language, string)
+string = input('Введите строку')
+what_need_to_do = input('Если необходимо зашифровать, напишите букву з, если необходимо дешифровать, введите д: ')
+while what_need_to_do != 'д' and what_need_to_do != 'з':
+    what_need_to_do = input('Некорректно указано действие, введите снова(з/д): ')
+if what_need_to_do == 'з':
+    code = cipher_string(language, string)
+else:
+    code = decipher_string(language, string)
 print(code)
 
