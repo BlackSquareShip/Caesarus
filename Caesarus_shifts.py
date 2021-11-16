@@ -6,57 +6,44 @@ en_lang = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
            'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
 
-def is_valid(num):
-    if num.isdigit():
-        return 'True'
-    else:
-        return 'False'
-
-
 def choice_of_language():
     ln = input('Введите язык(ru/en):')
-    if ln == 'ru':
-         return'ru'
-    elif ln == 'en':
-        return 'en'
-    elif ln != 'ru'  or ln != 'en':
-        while ln != 'ru'  and ln != 'en':
-            ln = input('Язык набран некорректно, попробуйте снова: ')
-        else:
-            return ln
-
-
-def cipher_string(ln):
-    if ln == 'ru':
-        ln = ru_lang
+    while ln != 'ru'  and ln != 'en':
+        ln = input('Язык набран некорректно, попробуйте снова: ')
     else:
-        ln = en_lang
-    string = input('Введите строку, которую нужно зашифровать/дешифровать: ')
-    string = list(string)
-    for i in range(len(string)):
-        if str(string[i]).islower():
-            if string[i] in ln:
-                index = ln.index(string[i])
-                if index + k > len(ln)-1:
-                    string[i] = ln[(index + k) - len(ln)]
-                else:
-                    string[i] = ln[index + k]
+        if ln == 'ru':
+            return ru_lang
         else:
-            string[i] = string[i].lower()
-            if string[i] in ln:
-                index = ln.index(string[i])
-                if index + k >> len(ln)-1:
-                    string[i] = ln[(index + k) - len(ln)].upper()
+            return en_lang
+
+
+def cipher_string(ln, string):
+    string = list(string)
+    for symbol in range(len(string)):
+        if str(string[symbol]).islower():
+            if string[symbol] in ln:
+                index = ln.index(string[symbol])
+                if index + k > len(ln)-1:
+                    string[symbol] = ln[(index + k) - len(ln)]
                 else:
-                    string[i] = ln[index + k].upper()
+                    string[symbol] = ln[index + k]
+        else:
+            string[symbol] = string[symbol].lower()
+            if string[symbol] in ln:
+                index = ln.index(string[symbol])
+                if index + k >> len(ln)-1:
+                    string[symbol] = ln[(index + k) - len(ln)].upper()
+                else:
+                    string[symbol] = ln[index + k].upper()
     string = ''.join(string)
     return string
 
 k = input('Введите желаемый ключ: ')
-while is_valid(k) != 'True':
+while not k.isdigit():
     k = input('Друг, почему ты ввел не цифру?Введи ее здесь:')
 k = int(k)
 language = choice_of_language()
-code = cipher_string(language)
+string = input('Введите строку, которую нужно зашифровать/дешифровать: ')
+code = cipher_string(language, string)
 print(code)
 
